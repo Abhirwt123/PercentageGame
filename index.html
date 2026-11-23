@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111827">
+    <title>Fraction ↔ Percentage Challenge</title>
+    <style>
+        :root {
+            --bg: #0b1220;
+            --panel: #121d30;
+            --panel2: #1a2940;
+            --text: #f3f6fc;
+            --muted: #aab8cc;
+            --accent: #7c9cff;
+            --good: #35c98a;
+            --bad: #ff6b78;
+            --line: #2a3b55
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at top, #1a2b49 0%, var(--bg) 58%);
+            color: var(--text);
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            padding: 22px
+        }
+
+        .app {
+            max-width: 760px;
+            margin: 0 auto
+        }
+
+        header {
+            text-align: center;
+            margin: 10px 0 22px
+        }
+
+        h1 {
+            font-size: clamp(1.65rem, 5vw, 2.35rem);
+            margin: 0 0 7px;
+            letter-spacing: -.04em
+        }
+
+        header p {
+            color: var(--muted);
+            margin: 0
+        }
+
+        .panel {
+            background: rgba(18, 29, 48, .96);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: clamp(16px, 4vw, 26px);
+            box-shadow: 0 18px 50px #0005
+        }
+
+        .setup {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px
+        }
+
+        label {
+            display: block;
+            color: var(--muted);
+            font-size: .82rem;
+            margin-bottom: 7px
+        }
+
+        select,
+        button {
+            font: inherit
+        }
+
+        select {
+            width: 100%;
+            background: var(--panel2);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            color: var(--text);
+            padding: 12px
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 18px 0
+        }
+
+        .stat {
+            background: var(--panel2);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center
+        }
+
+        .stat small {
+            display: block;
+            color: var(--muted);
+            font-size: .75rem
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1.35rem;
+            margin-top: 2px;
+            font-variant-numeric: tabular-nums
+        }
+
+        .progress-wrap {
+            height: 8px;
+            background: #26364e;
+            border-radius: 99px;
+            overflow: hidden;
+            margin: 14px 0 22px
+        }
+
+        .progress {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #7895ff, #50d6b0);
+            transition: width .25s
+        }
+
+        .question-area {
+            text-align: center;
+            padding: 12px 0 18px
+        }
+
+        .eyebrow {
+            color: var(--muted);
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .12em
+        }
+
+        .question {
+            font-size: clamp(2.5rem, 10vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -.05em;
+            margin: 12px 0 5px;
+            overflow-wrap: anywhere
+        }
+
+        .instruction {
+            color: var(--muted);
+            margin: 0
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 11px
+        }
+
+        .answer {
+            background: var(--panel2);
+            border: 1px solid var(--line);
+            color: var(--text);
+            border-radius: 14px;
+            padding: 16px 10px;
+            font-size: 1.12rem;
+            font-weight: 650;
+            cursor: pointer;
+            min-height: 62px;
+            transition: .15s
+        }
+
+        .answer:hover:not(:disabled) {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            background: #243653
+        }
+
+        .answer:focus-visible,
+        button:focus-visible,
+        select:focus-visible {
+            outline: 3px solid #a9bbff;
+            outline-offset: 2px
+        }
+
+        .answer:disabled {
+            cursor: default;
+            opacity: 1
+        }
+
+        .answer.correct {
+            border-color: var(--good);
+            background: #123d35;
+            color: #a9f4d4
+        }
+
+        .answer.wrong {
+            border-color: var(--bad);
+            background: #49232e;
+            color: #ffc0c7
+        }
+
+        .feedback {
+            min-height: 54px;
+            margin: 15px 0 4px;
+            text-align: center;
+            color: var(--muted);
+            line-height: 1.45
+        }
+
+        .feedback.good {
+            color: #8ce9c1
+        }
+
+        .feedback.bad {
+            color: #ffabb4
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px
+        }
+
+        .primary,
+        .secondary {
+            border: 0;
+            border-radius: 13px;
+            padding: 13px 17px;
+            font-weight: 750;
+            cursor: pointer
+        }
+
+        .primary {
+            background: var(--accent);
+            color: #10182b;
+            flex: 1
+        }
+
+        .primary:hover {
+            filter: brightness(1.08)
+        }
+
+        .secondary {
+            background: #26364e;
+            color: var(--text)
+        }
+
+        .primary:disabled {
+            opacity: .45;
+            cursor: not-allowed
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        .result {
+            text-align: center;
+            padding: 15px 0
+        }
+
+        .result h2 {
+            font-size: 2rem;
+            margin: 5px
+        }
+
+        .result .big {
+            font-size: 3.4rem;
+            font-weight: 850;
+            color: #a9bcff
+        }
+
+        .result p {
+            color: var(--muted)
+        }
+
+        .note {
+            font-size: .8rem;
+            color: var(--muted);
+            line-height: 1.5;
+            margin: 17px 2px 0
+        }
+
+        @media(max-width:520px) {
+            body {
+                padding: 12px
+            }
+
+            .setup {
+                grid-template-columns: 1fr
+            }
+
+            .stats {
+                gap: 7px
+            }
+
+            .stat {
+                padding: 10px 5px
+            }
+
+            .stat strong {
+                font-size: 1.15rem
+            }
+
+            .answers {
+                gap: 8px
+            }
+
+            .answer {
+                font-size: 1rem;
+                padding: 13px 7px;
+                min-height: 58px
+            }
+
+            .actions {
+                flex-direction: column
+            }
+
+            .secondary {
+                width: 100%
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="app">
+        <header>
+            <h1>Fraction ↔ Percentage</h1>
+            <p>A quick-fire maths game for competitive exams</p>
+        </header>
+
+        <section class="panel" aria-label="Fraction percentage game">
+            <div class="setup">
+                <div><label for="mode">Question type</label>
+                    <select id="mode">
+                        <option value="mixed">Mixed: both directions</option>
+                        <option value="f2p">Fraction → Percentage</option>
+                        <option value="p2f">Percentage → Fraction</option>
+                    </select>
+                </div>
+                <div><label for="rounds">Questions per round</label>
+                    <select id="rounds">
+                        <option>10</option>
+                        <option>15</option>
+                        <option>20</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat"><small>Score</small><strong id="score">0</strong></div>
+                <div class="stat"><small>Question</small><strong id="count">1 / 10</strong></div>
+                <div class="stat"><small>Streak</small><strong id="streak">0 🔥</strong></div>
+            </div>
+            <div class="progress-wrap">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <div id="game">
+                <div class="question-area">
+                    <div class="eyebrow" id="direction">Convert this fraction</div>
+                    <div class="question" id="question">3/8</div>
+                    <p class="instruction" id="instruction">Choose the correct percentage</p>
+                </div>
+                <div class="answers" id="answers"></div>
+                <div class="feedback" id="feedback" aria-live="polite">Choose an answer to score points.</div>
+                <div class="actions">
+                    <button class="primary" id="next" disabled>Next question →</button>
+                    <button class="secondary" id="restart">Restart</button>
+                </div>
+            </div>
+
+            <div class="result hidden" id="result">
+                <div class="eyebrow">Round complete</div>
+                <h2>Your score</h2>
+                <div class="big" id="finalScore">0 / 10</div>
+                <p id="summary"></p>
+                <button class="primary" id="playAgain">Play again</button>
+            </div>
+        </section>
+        <p class="note">Note: Repeating decimals are shown to two decimal places (for example, 1/7 ≈ 14.29%). In
+            percentage-to-fraction questions, the answer is the simplified fraction. Each correct answer earns 10
+            points.</p>
+    </main>
+    <script>
+        const pairs = [
+            ["1/2", "50"], ["1/3", "33.33"], ["2/3", "66.67"], ["1/4", "25"], ["3/4", "75"],
+            ["1/5", "20"], ["2/5", "40"], ["3/5", "60"], ["4/5", "80"],
+            ["1/6", "16.67"], ["5/6", "83.33"],
+            ["1/7", "14.29"], ["2/7", "28.57"], ["3/7", "42.86"], ["4/7", "57.14"], ["5/7", "71.43"], ["6/7", "85.71"],
+            ["1/8", "12.5"], ["3/8", "37.5"], ["5/8", "62.5"], ["7/8", "87.5"],
+            ["1/9", "11.11"], ["2/9", "22.22"], ["4/9", "44.44"], ["5/9", "55.56"], ["7/9", "77.78"], ["8/9", "88.89"],
+            ["1/10", "10"], ["3/10", "30"], ["7/10", "70"], ["9/10", "90"],
+            ["1/11", "9.09"], ["2/11", "18.18"], ["3/11", "27.27"], ["4/11", "36.36"], ["5/11", "45.45"], ["6/11", "54.55"], ["7/11", "63.64"], ["8/11", "72.73"], ["9/11", "81.82"], ["10/11", "90.91"],
+            ["1/12", "8.33"], ["5/12", "41.67"], ["7/12", "58.33"], ["11/12", "91.67"],
+            ["1/13", "7.69"], ["2/13", "15.38"], ["3/13", "23.08"], ["4/13", "30.77"], ["5/13", "38.46"], ["6/13", "46.15"], ["7/13", "53.85"], ["8/13", "61.54"], ["9/13", "69.23"], ["10/13", "76.92"], ["11/13", "84.62"], ["12/13", "92.31"],
+            ["1/14", "7.14"], ["3/14", "21.43"], ["5/14", "35.71"], ["9/14", "64.29"], ["11/14", "78.57"], ["13/14", "92.86"],
+            ["1/15", "6.67"], ["2/15", "13.33"], ["4/15", "26.67"], ["7/15", "46.67"], ["8/15", "53.33"], ["11/15", "73.33"], ["13/15", "86.67"],
+            ["1/16", "6.25"], ["3/16", "18.75"], ["5/16", "31.25"], ["7/16", "43.75"], ["9/16", "56.25"], ["11/16", "68.75"], ["13/16", "81.25"], ["15/16", "93.75"],
+            ["1/17", "5.88"], ["3/17", "17.65"], ["5/17", "29.41"], ["7/17", "41.18"], ["9/17", "52.94"], ["11/17", "64.71"], ["13/17", "76.47"], ["15/17", "88.24"],
+            ["1/18", "5.56"], ["5/18", "27.78"], ["7/18", "38.89"], ["11/18", "61.11"], ["13/18", "72.22"], ["17/18", "94.44"],
+            ["1/19", "5.26"], ["3/19", "15.79"], ["5/19", "26.32"], ["7/19", "36.84"], ["9/19", "47.37"], ["11/19", "57.89"], ["13/19", "68.42"], ["15/19", "78.95"], ["17/19", "89.47"],
+            ["1/20", "5"], ["3/20", "15"], ["7/20", "35"], ["9/20", "45"], ["11/20", "55"], ["13/20", "65"], ["17/20", "85"], ["19/20", "95"],
+            ["1/24", "4.17"], ["5/24", "20.83"], ["7/24", "29.17"], ["11/24", "45.83"], ["13/24", "54.17"], ["17/24", "70.83"], ["19/24", "79.17"], ["23/24", "95.83"],
+            ["1/25", "4"], ["3/25", "12"], ["7/25", "28"], ["9/25", "36"], ["11/25", "44"], ["13/25", "52"], ["17/25", "68"], ["19/25", "76"], ["21/25", "84"], ["23/25", "92"],
+            ["1/32", "3.125"], ["3/32", "9.375"], ["5/32", "15.625"], ["7/32", "21.875"], ["9/32", "28.125"], ["11/32", "34.375"], ["13/32", "40.625"], ["15/32", "46.875"], ["17/32", "53.125"],
+            ["1/40", "2.5"], ["3/40", "7.5"], ["7/40", "17.5"], ["9/40", "22.5"], ["11/40", "27.5"], ["13/40", "32.5"], ["17/40", "42.5"], ["19/40", "47.5"], ["21/40", "52.5"],
+            ["1/50", "2"], ["3/50", "6"], ["7/50", "14"], ["9/50", "18"], ["11/50", "22"], ["13/50", "26"], ["17/50", "34"], ["19/50", "38"], ["21/50", "42"], ["23/50", "46"]
+        ];
+        const $ = id => document.getElementById(id);
+        let deck = [], index = 0, score = 0, streak = 0, current = null, locked = false, total = 10;
+        function shuffle(a) { return [...a].sort(() => Math.random() - .5) }
+        function percentText(v) { return `${v}%` }
+        function makeQuestion() {
+            const mode = $("mode").value;
+            const direction = mode === "mixed" ? (Math.random() < .5 ? "f2p" : "p2f") : mode;
+            const pair = deck[index];
+            const correct = direction === "f2p" ? percentText(pair[1]) : pair[0];
+            const pool = shuffle(pairs.filter(p => p[0] !== pair[0]).map(p => direction === "f2p" ? percentText(p[1]) : p[0]));
+            const choices = shuffle([correct, ...pool.slice(0, 3)]);
+            current = { direction, correct, choices, pair };
+            $("direction").textContent = direction === "f2p" ? "Fraction → Percentage" : "Percentage → Fraction";
+            $("question").textContent = direction === "f2p" ? pair[0] : percentText(pair[1]);
+            $("instruction").textContent = direction === "f2p" ? "Choose the correct percentage" : "Choose the simplified fraction";
+            $("answers").innerHTML = "";
+            choices.forEach(choice => {
+                const b = document.createElement("button"); b.className = "answer"; b.textContent = choice;
+                b.addEventListener("click", () => selectAnswer(choice, b)); $("answers").appendChild(b);
+            });
+            $("feedback").textContent = "Choose an answer to score points.";
+            $("feedback").className = "feedback";
+            $("next").disabled = true; locked = false;
+            $("count").textContent = `${index + 1} / ${total}`;
+            $("progress").style.width = `${index / total * 100}%`;
+        }
+        function selectAnswer(choice, button) {
+            if (locked) return; locked = true;
+            const correct = choice === current.correct;
+            document.querySelectorAll(".answer").forEach(b => {
+                b.disabled = true;
+                if (b.textContent === current.correct) b.classList.add("correct");
+            });
+            if (correct) { score += 10; streak++; $("feedback").textContent = "Correct! +10 points. Keep it up!"; $("feedback").className = "feedback good"; }
+            else { streak = 0; button.classList.add("wrong"); $("feedback").textContent = `Not quite. Correct answer: ${current.correct}`; $("feedback").className = "feedback bad"; }
+            $("score").textContent = score; $("streak").textContent = streak + " 🔥"; $("next").disabled = false;
+        }
+        function start() {
+            total = Number($("rounds").value); deck = shuffle(pairs).slice(0, total);
+            index = 0; score = 0; streak = 0;
+            $("score").textContent = "0"; $("streak").textContent = "0 🔥"; $("game").classList.remove("hidden"); $("result").classList.add("hidden");
+            makeQuestion();
+        }
+        function next() {
+            if (!locked) return;
+            index++;
+            if (index >= total) {
+                $("game").classList.add("hidden"); $("result").classList.remove("hidden");
+                $("progress").style.width = "100%"; $("finalScore").textContent = `${score} / ${total * 10}`;
+                const pct = score / (total * 10) * 100;
+                $("summary").textContent = pct === 100 ? "Perfect round! Excellent calculation speed." : pct >= 70 ? "Great work. Keep practising to get faster." : pct >= 50 ? "Good effort. Review the missed conversions and try again." : "Keep going. Memorise the common fractions and try another round.";
+            } else makeQuestion();
+        }
+        $("next").addEventListener("click", next);
+        $("restart").addEventListener("click", start);
+        $("playAgain").addEventListener("click", start);
+        $("mode").addEventListener("change", start);
+        $("rounds").addEventListener("change", start);
+        start();
+    </script>
+</body>
+
+</html>
