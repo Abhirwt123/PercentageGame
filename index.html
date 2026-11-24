@@ -2,478 +2,892 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#111827">
-    <title>Fraction ↔ Percentage Challenge</title>
-    <style>
-        :root {
-            --bg: #0b1220;
-            --panel: #121d30;
-            --panel2: #1a2940;
-            --text: #f3f6fc;
-            --muted: #aab8cc;
-            --accent: #7c9cff;
-            --good: #35c98a;
-            --bad: #ff6b78;
-            --line: #2a3b55
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>MathSprint — Exam Maths Practice</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #fff;
+      --text: #172033;
+      --muted: #697386;
+      --line: #e5e9f1;
+      --primary: #5b5ce2;
+      --primary2: #7778f2;
+      --green: #16865b;
+      --red: #d84b58;
+      --soft: #eef0ff;
+      --shadow: 0 8px 28px rgba(27, 39, 74, .07)
+    }
 
-        * {
-            box-sizing: border-box
-        }
+    * {
+      box-sizing: border-box
+    }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: radial-gradient(ellipse at top, #1a2b49 0%, var(--bg) 58%);
-            color: var(--text);
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-            padding: 22px
-        }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial
+    }
 
-        .app {
-            max-width: 760px;
-            margin: 0 auto
-        }
+    button,
+    input,
+    select {
+      font: inherit
+    }
 
-        header {
-            text-align: center;
-            margin: 10px 0 22px
-        }
+    button {
+      cursor: pointer;
+      border: 0
+    }
 
-        h1 {
-            font-size: clamp(1.65rem, 5vw, 2.35rem);
-            margin: 0 0 7px;
-            letter-spacing: -.04em
-        }
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 3px solid #b7b8ff;
+      outline-offset: 2px
+    }
 
-        header p {
-            color: var(--muted);
-            margin: 0
-        }
+    .app {
+      max-width: 1100px;
+      margin: auto;
+      padding: 22px 18px 50px
+    }
 
-        .panel {
-            background: rgba(18, 29, 48, .96);
-            border: 1px solid var(--line);
-            border-radius: 22px;
-            padding: clamp(16px, 4vw, 26px);
-            box-shadow: 0 18px 50px #0005
-        }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px
+    }
 
-        .setup {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 18px
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 21px
+    }
 
-        label {
-            display: block;
-            color: var(--muted);
-            font-size: .82rem;
-            margin-bottom: 7px
-        }
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #5658dc, #9293ff);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 21px
+    }
 
-        select,
-        button {
-            font: inherit
-        }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
 
-        select {
-            width: 100%;
-            background: var(--panel2);
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            color: var(--text);
-            padding: 12px
-        }
+    .iconbtn,
+    .ghost {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 11px;
+      padding: 9px 12px
+    }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 18px 0
-        }
+    .hero {
+      background: linear-gradient(120deg, #4e50cf, #7779ee);
+      color: white;
+      padding: 26px;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px
+    }
 
-        .stat {
-            background: var(--panel2);
-            border-radius: 14px;
-            padding: 12px;
-            text-align: center
-        }
+    .hero h1 {
+      margin: 0 0 5px;
+      font-size: clamp(23px, 4vw, 32px)
+    }
 
-        .stat small {
-            display: block;
-            color: var(--muted);
-            font-size: .75rem
-        }
+    .hero p {
+      margin: 0;
+      color: #e5e5ff;
+      max-width: 650px
+    }
 
-        .stat strong {
-            display: block;
-            font-size: 1.35rem;
-            margin-top: 2px;
-            font-variant-numeric: tabular-nums
-        }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 18px 0 26px
+    }
 
-        .progress-wrap {
-            height: 8px;
-            background: #26364e;
-            border-radius: 99px;
-            overflow: hidden;
-            margin: 14px 0 22px
-        }
+    .stat,
+    .card,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      box-shadow: var(--shadow)
+    }
 
-        .progress {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, #7895ff, #50d6b0);
-            transition: width .25s
-        }
+    .stat {
+      padding: 15px
+    }
 
-        .question-area {
-            text-align: center;
-            padding: 12px 0 18px
-        }
+    .stat small {
+      color: var(--muted)
+    }
 
-        .eyebrow {
-            color: var(--muted);
-            font-size: .82rem;
-            text-transform: uppercase;
-            letter-spacing: .12em
-        }
+    .stat strong {
+      display: block;
+      font-size: 23px;
+      margin-top: 3px
+    }
 
-        .question {
-            font-size: clamp(2.5rem, 10vw, 4.5rem);
-            font-weight: 800;
-            letter-spacing: -.05em;
-            margin: 12px 0 5px;
-            overflow-wrap: anywhere
-        }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin: 25px 0 12px
+    }
 
-        .instruction {
-            color: var(--muted);
-            margin: 0
-        }
+    .section-head h2 {
+      font-size: 19px;
+      margin: 0
+    }
 
-        .answers {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 11px
-        }
+    .section-head p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 13px
+    }
 
-        .answer {
-            background: var(--panel2);
-            border: 1px solid var(--line);
-            color: var(--text);
-            border-radius: 14px;
-            padding: 16px 10px;
-            font-size: 1.12rem;
-            font-weight: 650;
-            cursor: pointer;
-            min-height: 62px;
-            transition: .15s
-        }
+    .mode-grid,
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px
+    }
 
-        .answer:hover:not(:disabled) {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            background: #243653
-        }
+    .card {
+      padding: 18px;
+      text-align: left;
+      color: var(--text);
+      transition: .18s
+    }
 
-        .answer:focus-visible,
-        button:focus-visible,
-        select:focus-visible {
-            outline: 3px solid #a9bbff;
-            outline-offset: 2px
-        }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #b9baff
+    }
 
-        .answer:disabled {
-            cursor: default;
-            opacity: 1
-        }
+    .card .emoji {
+      font-size: 27px
+    }
 
-        .answer.correct {
-            border-color: var(--good);
-            background: #123d35;
-            color: #a9f4d4
-        }
+    .card h3 {
+      margin: 8px 0 3px;
+      font-size: 17px
+    }
 
-        .answer.wrong {
-            border-color: var(--bad);
-            background: #49232e;
-            color: #ffc0c7
-        }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px
+    }
 
-        .feedback {
-            min-height: 54px;
-            margin: 15px 0 4px;
-            text-align: center;
-            color: var(--muted);
-            line-height: 1.45
-        }
+    .topic-grid {
+      grid-template-columns: repeat(4, 1fr)
+    }
 
-        .feedback.good {
-            color: #8ce9c1
-        }
+    .topic {
+      min-height: 145px
+    }
 
-        .feedback.bad {
-            color: #ffabb4
-        }
+    .topic .tag {
+      display: inline-block;
+      background: var(--soft);
+      color: var(--primary);
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 12px
+    }
 
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px
-        }
+    .view {
+      display: none
+    }
 
-        .primary,
-        .secondary {
-            border: 0;
-            border-radius: 13px;
-            padding: 13px 17px;
-            font-weight: 750;
-            cursor: pointer
-        }
+    .view.active {
+      display: block
+    }
 
-        .primary {
-            background: var(--accent);
-            color: #10182b;
-            flex: 1
-        }
+    .back {
+      margin-bottom: 15px
+    }
 
-        .primary:hover {
-            filter: brightness(1.08)
-        }
+    .panel {
+      padding: 22px
+    }
 
-        .secondary {
-            background: #26364e;
-            color: var(--text)
-        }
+    .formgrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 16px 0
+    }
 
-        .primary:disabled {
-            opacity: .45;
-            cursor: not-allowed
-        }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px
+    }
 
-        .hidden {
-            display: none !important
-        }
+    .field input,
+    .field select,
+    .answer-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--panel);
+      color: var(--text)
+    }
 
-        .result {
-            text-align: center;
-            padding: 15px 0
-        }
+    .btn {
+      padding: 12px 18px;
+      border-radius: 11px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700
+    }
 
-        .result h2 {
-            font-size: 2rem;
-            margin: 5px
-        }
+    .btn:hover {
+      background: #484acb
+    }
 
-        .result .big {
-            font-size: 3.4rem;
-            font-weight: 850;
-            color: #a9bcff
-        }
+    .btn.secondary {
+      background: var(--soft);
+      color: var(--primary)
+    }
 
-        .result p {
-            color: var(--muted)
-        }
+    .btn.full {
+      width: 100%
+    }
 
-        .note {
-            font-size: .8rem;
-            color: var(--muted);
-            line-height: 1.5;
-            margin: 17px 2px 0
-        }
+    .muted {
+      color: var(--muted)
+    }
 
-        @media(max-width:520px) {
-            body {
-                padding: 12px
-            }
+    .practice-output {
+      margin-top: 18px
+    }
 
-            .setup {
-                grid-template-columns: 1fr
-            }
+    .table-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px
+    }
 
-            .stats {
-                gap: 7px
-            }
+    .equation {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      font-weight: 650;
+      display: flex;
+      justify-content: space-between
+    }
 
-            .stat {
-                padding: 10px 5px
-            }
+    .equation span:last-child {
+      color: var(--primary)
+    }
 
-            .stat strong {
-                font-size: 1.15rem
-            }
+    .quizbox {
+      max-width: 720px;
+      margin: 0 auto
+    }
 
-            .answers {
-                gap: 8px
-            }
+    .quiztop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px
+    }
 
-            .answer {
-                font-size: 1rem;
-                padding: 13px 7px;
-                min-height: 58px
-            }
+    .pill {
+      background: var(--soft);
+      color: var(--primary);
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 12px
+    }
 
-            .actions {
-                flex-direction: column
-            }
+    .progress {
+      height: 8px;
+      background: var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 12px 0 22px
+    }
 
-            .secondary {
-                width: 100%
-            }
-        }
-    </style>
+    .progress>div {
+      height: 100%;
+      background: var(--primary);
+      width: 0;
+      transition: width .2s
+    }
+
+    .question {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 800;
+      text-align: center;
+      margin: 28px 0 22px;
+      letter-spacing: -.5px
+    }
+
+    .hintbox {
+      background: #fff8e7;
+      border: 1px solid #f4dfaa;
+      color: #73571c;
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin: 12px 0;
+      font-size: 14px
+    }
+
+    .answer-row {
+      display: flex;
+      gap: 9px
+    }
+
+    .answer-input {
+      font-size: 20px;
+      text-align: center;
+      flex: 1;
+      min-width: 0
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px
+    }
+
+    .option {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      font-weight: 750;
+      color: var(--text)
+    }
+
+    .option:hover {
+      border-color: var(--primary);
+      background: var(--soft)
+    }
+
+    .option.correct {
+      border-color: var(--green);
+      background: #e8f7f0;
+      color: var(--green)
+    }
+
+    .option.wrong {
+      border-color: var(--red);
+      background: #fff0f1;
+      color: var(--red)
+    }
+
+    .feedback {
+      margin: 14px 0;
+      padding: 12px;
+      border-radius: 11px;
+      font-weight: 650
+    }
+
+    .feedback.good {
+      background: #e8f7f0;
+      color: var(--green)
+    }
+
+    .feedback.bad {
+      background: #fff0f1;
+      color: var(--red)
+    }
+
+    .quiz-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px
+    }
+
+    .result {
+      text-align: center
+    }
+
+    .result-score {
+      font-size: 48px;
+      font-weight: 850;
+      color: var(--primary)
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px 0
+    }
+
+    .result-grid .stat {
+      box-shadow: none
+    }
+
+    .review {
+      text-align: left;
+      margin-top: 22px
+    }
+
+    .review-item {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0
+    }
+
+    .review-item strong {
+      display: block
+    }
+
+    .review-item small {
+      color: var(--muted)
+    }
+
+    .empty {
+      padding: 30px;
+      text-align: center;
+      color: var(--muted)
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 28px
+    }
+
+    body.dark {
+      --bg: #111522;
+      --panel: #1b2232;
+      --text: #edf0fa;
+      --muted: #a0a9bc;
+      --line: #30394d;
+      --soft: #292b50;
+      --shadow: 0 8px 28px rgba(0, 0, 0, .16)
+    }
+
+    body.dark .hintbox {
+      background: #39301b;
+      color: #f4dfa5;
+      border-color: #65532b
+    }
+
+    body.dark .equation {
+      background: #151b29
+    }
+
+    body.dark .feedback.good {
+      background: #173b30
+    }
+
+    body.dark .feedback.bad {
+      background: #44242b
+    }
+
+    @media(max-width:720px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .topic-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .hero {
+        padding: 21px
+      }
+
+      .app {
+        padding: 15px 13px 35px
+      }
+    }
+
+    @media(max-width:460px) {
+
+      .mode-grid,
+      .formgrid {
+        grid-template-columns: 1fr
+      }
+
+      .topic-grid {
+        gap: 9px
+      }
+
+      .topic {
+        padding: 14px;
+        min-height: 132px
+      }
+
+      .answer-row {
+        flex-direction: column
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr 1fr 1fr
+      }
+
+      .top {
+        margin-bottom: 16px
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <main class="app">
-        <header>
-            <h1>Fraction ↔ Percentage</h1>
-            <p>A quick-fire maths game for competitive exams</p>
-        </header>
+  <div class="app">
+    <header class="top">
+      <div class="brand">
+        <div class="logo">∑</div> MathSprint
+      </div>
+      <div class="top-right"><span class="muted" id="streakLabel">🔥 0 day streak</span><button class="iconbtn"
+          id="themeBtn" aria-label="Toggle dark mode">☾</button></div>
+    </header>
+    <main>
+      <section id="home" class="view active">
+        <div class="hero">
+          <h1>Small practice. Big improvement.</h1>
+          <p>Build calculation speed and accuracy for Banking, SSC and other competitive exams — one question at a time.
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat"><small>Questions attempted</small><strong id="totalStat">0</strong></div>
+          <div class="stat"><small>Overall accuracy</small><strong id="accuracyStat">0%</strong></div>
+          <div class="stat"><small>Correct answers</small><strong id="correctStat">0</strong></div>
+          <div class="stat"><small>Saved mistakes</small><strong id="mistakeStat">0</strong></div>
+        </div>
+        <div class="section-head">
+          <div>
+            <h2>Choose how to learn</h2>
+            <p>Practise without pressure or test yourself with a quiz.</p>
+          </div>
+        </div>
+        <div class="mode-grid">
+          <button class="card" onclick="openSetup('practice')">
+            <div class="emoji">📖</div>
+            <h3>Practice mode</h3>
+            <p>Learn tables, squares, cubes and fraction-percentage conversions.</p>
+          </button>
+          <button class="card" onclick="openSetup('quiz')">
+            <div class="emoji">⚡</div>
+            <h3>Quiz mode</h3>
+            <p>Timed or untimed questions with manual answers or MCQs.</p>
+          </button>
+          <button class="card" onclick="startMistakes()">
+            <div class="emoji">🎯</div>
+            <h3>Mistake notebook</h3>
+            <p>Revise questions you answered incorrectly.</p><span class="tag" id="mistakeTag">0 saved</span>
+          </button>
+          <button class="card" onclick="dailyChallenge()">
+            <div class="emoji">🌟</div>
+            <h3>Daily challenge</h3>
+            <p>A short mixed quiz to keep your practice consistent.</p><span class="tag">20 questions</span>
+          </button>
+        </div>
+        <div class="section-head">
+          <div>
+            <h2>Practice topics</h2>
+            <p>Choose a topic to open its learning tools.</p>
+          </div>
+        </div>
+        <div class="topic-grid">
+          <button class="card topic" onclick="openPractice('tables')">
+            <div class="emoji">✖️</div>
+            <h3>Tables</h3>
+            <p>Multiplication facts</p><span class="tag">2–30</span>
+          </button>
+          <button class="card topic" onclick="openPractice('squares')">
+            <div class="emoji">🔲</div>
+            <h3>Squares</h3>
+            <p>Perfect squares</p><span class="tag">1–100</span>
+          </button>
+          <button class="card topic" onclick="openPractice('cubes')">
+            <div class="emoji">🧊</div>
+            <h3>Cubes</h3>
+            <p>Perfect cubes</p><span class="tag">1–30</span>
+          </button>
+          <button class="card topic" onclick="openPractice('fractions')">
+            <div class="emoji">％</div>
+            <h3>Fractions & %</h3>
+            <p>Conversions and patterns</p><span class="tag">Exam essentials</span>
+          </button>
+        </div>
+      </section>
 
-        <section class="panel" aria-label="Fraction percentage game">
-            <div class="setup">
-                <div><label for="mode">Question type</label>
-                    <select id="mode">
-                        <option value="mixed">Mixed: both directions</option>
-                        <option value="f2p">Fraction → Percentage</option>
-                        <option value="p2f">Percentage → Fraction</option>
-                    </select>
-                </div>
-                <div><label for="rounds">Questions per round</label>
-                    <select id="rounds">
-                        <option>10</option>
-                        <option>15</option>
-                        <option>20</option>
-                    </select>
-                </div>
-            </div>
+      <section id="setup" class="view">
+        <button class="ghost back" onclick="showView('home')">← Dashboard</button>
+        <div class="panel">
+          <h2 id="setupTitle">Quiz setup</h2>
+          <p class="muted" id="setupDesc">Choose a topic and customize your session.</p>
+          <div class="formgrid">
+            <div class="field"><label for="topicSelect">Topic</label><select id="topicSelect">
+                <option value="tables">Tables</option>
+                <option value="squares">Squares</option>
+                <option value="cubes">Cubes</option>
+                <option value="fractions">Fractions & percentages</option>
+                <option value="mixed">Mixed topics</option>
+              </select></div>
+            <div class="field"><label for="methodSelect">Answer method</label><select id="methodSelect">
+                <option value="manual">Enter answer manually</option>
+                <option value="mcq">Multiple choice (MCQ)</option>
+              </select></div>
+            <div class="field"><label for="countSelect">Number of questions</label><select id="countSelect">
+                <option>10</option>
+                <option selected>20</option>
+                <option>30</option>
+                <option>50</option>
+              </select></div>
+            <div class="field"><label for="difficultySelect">Difficulty</label><select id="difficultySelect">
+                <option value="easy">Easy</option>
+                <option value="moderate" selected>Moderate</option>
+                <option value="hard">Hard</option>
+                <option value="mixed">Mixed</option>
+              </select></div>
+            <div class="field"><label for="timerSelect">Timer</label><select id="timerSelect">
+                <option value="0">No timer</option>
+                <option value="60">1 minute</option>
+                <option value="180">3 minutes</option>
+                <option value="300" selected>5 minutes</option>
+                <option value="600">10 minutes</option>
+              </select></div>
+            <div class="field"><label for="fractionDirection">Fraction quiz direction</label><select
+                id="fractionDirection">
+                <option value="both">Both directions</option>
+                <option value="f2p">Fraction → Percentage</option>
+                <option value="p2f">Percentage → Fraction</option>
+              </select></div>
+            <div class="field"><label for="tableFrom">Table range starts at</label><input id="tableFrom" type="number"
+                min="2" max="100" value="2"></div>
+            <div class="field"><label for="tableTo">Table range ends at</label><input id="tableTo" type="number" min="2"
+                max="100" value="20"></div>
+            <div class="field"><label for="multLimit">Table multiplication limit</label><select id="multLimit">
+                <option>10</option>
+                <option selected>15</option>
+                <option>20</option>
+              </select></div>
+          </div>
+          <button class="btn full" onclick="beginQuiz()">Start session →</button>
+        </div>
+      </section>
 
-            <div class="stats">
-                <div class="stat"><small>Score</small><strong id="score">0</strong></div>
-                <div class="stat"><small>Question</small><strong id="count">1 / 10</strong></div>
-                <div class="stat"><small>Streak</small><strong id="streak">0 🔥</strong></div>
-            </div>
-            <div class="progress-wrap">
-                <div class="progress" id="progress"></div>
-            </div>
+      <section id="practice" class="view">
+        <button class="ghost back" onclick="showView('home')">← Dashboard</button>
+        <div class="panel">
+          <h2 id="practiceTitle">Practice</h2>
+          <p class="muted" id="practiceDesc">Choose what you want to revise.</p>
+          <div id="practiceControls"></div>
+          <div id="practiceOutput" class="practice-output"></div>
+        </div>
+      </section>
 
-            <div id="game">
-                <div class="question-area">
-                    <div class="eyebrow" id="direction">Convert this fraction</div>
-                    <div class="question" id="question">3/8</div>
-                    <p class="instruction" id="instruction">Choose the correct percentage</p>
-                </div>
-                <div class="answers" id="answers"></div>
-                <div class="feedback" id="feedback" aria-live="polite">Choose an answer to score points.</div>
-                <div class="actions">
-                    <button class="primary" id="next" disabled>Next question →</button>
-                    <button class="secondary" id="restart">Restart</button>
-                </div>
-            </div>
-
-            <div class="result hidden" id="result">
-                <div class="eyebrow">Round complete</div>
-                <h2>Your score</h2>
-                <div class="big" id="finalScore">0 / 10</div>
-                <p id="summary"></p>
-                <button class="primary" id="playAgain">Play again</button>
-            </div>
-        </section>
-        <p class="note">Note: Repeating decimals are shown to two decimal places (for example, 1/7 ≈ 14.29%). In
-            percentage-to-fraction questions, the answer is the simplified fraction. Each correct answer earns 10
-            points.</p>
+      <section id="quiz" class="view">
+        <div class="quizbox panel">
+          <div class="quiztop"><span class="pill" id="quizTopic">Tables</span><span class="pill"
+              id="timerText">Untimed</span><span class="muted" id="questionCount">1 / 20</span></div>
+          <div class="progress">
+            <div id="progressBar"></div>
+          </div>
+          <div class="question" id="questionText">12 × 8 = ?</div>
+          <div style="text-align:center"><button class="ghost" onclick="toggleHint()">💡 Show hint</button></div>
+          <div id="hintArea"></div>
+          <div id="answerArea"></div>
+          <div id="feedbackArea"></div>
+          <div class="quiz-actions"><button class="btn secondary" onclick="endQuizEarly()">Finish
+              session</button><button class="btn" id="nextBtn" onclick="nextQuestion()" style="display:none">Next
+              question →</button></div>
+        </div>
+      </section>
+      <section id="results" class="view">
+        <div class="panel result">
+          <div style="font-size:35px">🏁</div>
+          <h2>Session complete!</h2>
+          <div class="result-score" id="resultAccuracy">0%</div>
+          <p class="muted">Your accuracy</p>
+          <div class="result-grid">
+            <div class="stat"><small>Correct</small><strong id="resultCorrect">0</strong></div>
+            <div class="stat"><small>Incorrect</small><strong id="resultWrong">0</strong></div>
+            <div class="stat"><small>Time taken</small><strong id="resultTime">0s</strong></div>
+          </div>
+          <p id="resultMessage"></p>
+          <div class="quiz-actions" style="justify-content:center"><button class="btn" onclick="showView('home')">Back
+              to dashboard</button><button class="btn secondary" onclick="retryWrong()">Practise mistakes</button></div>
+          <div class="review" id="reviewList"></div>
+        </div>
+      </section>
     </main>
-    <script>
-        const pairs = [
-            ["1/2", "50"], ["1/3", "33.33"], ["2/3", "66.67"], ["1/4", "25"], ["3/4", "75"],
-            ["1/5", "20"], ["2/5", "40"], ["3/5", "60"], ["4/5", "80"],
-            ["1/6", "16.67"], ["5/6", "83.33"],
-            ["1/7", "14.29"], ["2/7", "28.57"], ["3/7", "42.86"], ["4/7", "57.14"], ["5/7", "71.43"], ["6/7", "85.71"],
-            ["1/8", "12.5"], ["3/8", "37.5"], ["5/8", "62.5"], ["7/8", "87.5"],
-            ["1/9", "11.11"], ["2/9", "22.22"], ["4/9", "44.44"], ["5/9", "55.56"], ["7/9", "77.78"], ["8/9", "88.89"],
-            ["1/10", "10"], ["3/10", "30"], ["7/10", "70"], ["9/10", "90"],
-            ["1/11", "9.09"], ["2/11", "18.18"], ["3/11", "27.27"], ["4/11", "36.36"], ["5/11", "45.45"], ["6/11", "54.55"], ["7/11", "63.64"], ["8/11", "72.73"], ["9/11", "81.82"], ["10/11", "90.91"],
-            ["1/12", "8.33"], ["5/12", "41.67"], ["7/12", "58.33"], ["11/12", "91.67"],
-            ["1/13", "7.69"], ["2/13", "15.38"], ["3/13", "23.08"], ["4/13", "30.77"], ["5/13", "38.46"], ["6/13", "46.15"], ["7/13", "53.85"], ["8/13", "61.54"], ["9/13", "69.23"], ["10/13", "76.92"], ["11/13", "84.62"], ["12/13", "92.31"],
-            ["1/14", "7.14"], ["3/14", "21.43"], ["5/14", "35.71"], ["9/14", "64.29"], ["11/14", "78.57"], ["13/14", "92.86"],
-            ["1/15", "6.67"], ["2/15", "13.33"], ["4/15", "26.67"], ["7/15", "46.67"], ["8/15", "53.33"], ["11/15", "73.33"], ["13/15", "86.67"],
-            ["1/16", "6.25"], ["3/16", "18.75"], ["5/16", "31.25"], ["7/16", "43.75"], ["9/16", "56.25"], ["11/16", "68.75"], ["13/16", "81.25"], ["15/16", "93.75"],
-            ["1/17", "5.88"], ["3/17", "17.65"], ["5/17", "29.41"], ["7/17", "41.18"], ["9/17", "52.94"], ["11/17", "64.71"], ["13/17", "76.47"], ["15/17", "88.24"],
-            ["1/18", "5.56"], ["5/18", "27.78"], ["7/18", "38.89"], ["11/18", "61.11"], ["13/18", "72.22"], ["17/18", "94.44"],
-            ["1/19", "5.26"], ["3/19", "15.79"], ["5/19", "26.32"], ["7/19", "36.84"], ["9/19", "47.37"], ["11/19", "57.89"], ["13/19", "68.42"], ["15/19", "78.95"], ["17/19", "89.47"],
-            ["1/20", "5"], ["3/20", "15"], ["7/20", "35"], ["9/20", "45"], ["11/20", "55"], ["13/20", "65"], ["17/20", "85"], ["19/20", "95"],
-            ["1/24", "4.17"], ["5/24", "20.83"], ["7/24", "29.17"], ["11/24", "45.83"], ["13/24", "54.17"], ["17/24", "70.83"], ["19/24", "79.17"], ["23/24", "95.83"],
-            ["1/25", "4"], ["3/25", "12"], ["7/25", "28"], ["9/25", "36"], ["11/25", "44"], ["13/25", "52"], ["17/25", "68"], ["19/25", "76"], ["21/25", "84"], ["23/25", "92"],
-            ["1/32", "3.125"], ["3/32", "9.375"], ["5/32", "15.625"], ["7/32", "21.875"], ["9/32", "28.125"], ["11/32", "34.375"], ["13/32", "40.625"], ["15/32", "46.875"], ["17/32", "53.125"],
-            ["1/40", "2.5"], ["3/40", "7.5"], ["7/40", "17.5"], ["9/40", "22.5"], ["11/40", "27.5"], ["13/40", "32.5"], ["17/40", "42.5"], ["19/40", "47.5"], ["21/40", "52.5"],
-            ["1/50", "2"], ["3/50", "6"], ["7/50", "14"], ["9/50", "18"], ["11/50", "22"], ["13/50", "26"], ["17/50", "34"], ["19/50", "38"], ["21/50", "42"], ["23/50", "46"]
-        ];
-        const $ = id => document.getElementById(id);
-        let deck = [], index = 0, score = 0, streak = 0, current = null, locked = false, total = 10;
-        function shuffle(a) { return [...a].sort(() => Math.random() - .5) }
-        function percentText(v) { return `${v}%` }
-        function makeQuestion() {
-            const mode = $("mode").value;
-            const direction = mode === "mixed" ? (Math.random() < .5 ? "f2p" : "p2f") : mode;
-            const pair = deck[index];
-            const correct = direction === "f2p" ? percentText(pair[1]) : pair[0];
-            const pool = shuffle(pairs.filter(p => p[0] !== pair[0]).map(p => direction === "f2p" ? percentText(p[1]) : p[0]));
-            const choices = shuffle([correct, ...pool.slice(0, 3)]);
-            current = { direction, correct, choices, pair };
-            $("direction").textContent = direction === "f2p" ? "Fraction → Percentage" : "Percentage → Fraction";
-            $("question").textContent = direction === "f2p" ? pair[0] : percentText(pair[1]);
-            $("instruction").textContent = direction === "f2p" ? "Choose the correct percentage" : "Choose the simplified fraction";
-            $("answers").innerHTML = "";
-            choices.forEach(choice => {
-                const b = document.createElement("button"); b.className = "answer"; b.textContent = choice;
-                b.addEventListener("click", () => selectAnswer(choice, b)); $("answers").appendChild(b);
-            });
-            $("feedback").textContent = "Choose an answer to score points.";
-            $("feedback").className = "feedback";
-            $("next").disabled = true; locked = false;
-            $("count").textContent = `${index + 1} / ${total}`;
-            $("progress").style.width = `${index / total * 100}%`;
+    <div class="footer">MathSprint · Your personal exam-maths practice space · Progress stays on this device</div>
+  </div>
+  <script>
+    const $ = id => document.getElementById(id);
+    const fractions = [
+      [1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [1, 5], [2, 5], [3, 5], [4, 5], [1, 6], [5, 6], [1, 7], [2, 7], [3, 7], [4, 7], [5, 7], [6, 7], [1, 8], [3, 8], [5, 8], [7, 8], [1, 9], [2, 9], [4, 9], [5, 9], [7, 9], [8, 9], [1, 10], [3, 10], [7, 10], [9, 10], [1, 11], [1, 12], [5, 12], [7, 12], [1, 13], [1, 14], [1, 15], [1, 16], [3, 16], [5, 16], [1, 17], [1, 18], [1, 19], [1, 20], [1, 22], [1, 24], [1, 25], [1, 32], [1, 40], [1, 50], [1, 64], [1, 80], [1, 100]
+    ];
+    const pct = (n, d) => n / d * 100, gcd = (a, b) => b ? gcd(b, a % b) : a;
+    const simplify = (n, d) => { let g = gcd(n, d); return `${n / g}/${d / g}` };
+    const pctText = (n, d) => { let v = pct(n, d); return Number.isInteger(v) ? String(v) : Number(v.toFixed(3)).toString() };
+    const fractionForPercent = p => { let best = null; for (let d = 1; d <= 100; d++) { let n = Math.round(p * d); if (Math.abs(n / d * 100 - p) < .0006) { best = simplify(n, d); break } } return best || `${p}/100` };
+    const hints = {
+      tables: 'Break one factor into an easy sum. For example, 16 × 15 = 16 × (10 + 5).',
+      squares: 'Think of nearby tens or use (a + b)² = a² + 2ab + b².',
+      cubes: 'First square the number, then multiply by the number once more.',
+      fractions: 'Use a familiar base fraction. For example, 12.5% = 1/8, so 62.5% = 5/8.'
+    };
+    let mode = 'quiz', questions = [], index = 0, answers = [], startedAt = 0, timer = null, remaining = 0, locked = false, currentWrong = [], lastConfig = null, practiceTopic = 'tables';
+    let stats = JSON.parse(localStorage.getItem('ms_stats') || '{"attempted":0,"correct":0,"mistakes":[],"history":[]}');
+    function save() { localStorage.setItem('ms_stats', JSON.stringify(stats)); renderStats() }
+    function renderStats() { let a = stats.attempted || 0, c = stats.correct || 0; $('totalStat').textContent = a; $('correctStat').textContent = c; $('accuracyStat').textContent = (a ? Math.round(c / a * 100) : 0) + '%'; $('mistakeStat').textContent = stats.mistakes.length; $('mistakeTag').textContent = stats.mistakes.length + ' saved'; $('streakLabel').textContent = '🔥 ' + (localStorage.getItem('ms_streak') || '0') + ' day streak' }
+    function showView(id) { document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); $(id).classList.add('active'); window.scrollTo(0, 0); if (id === 'home') renderStats() }
+    function openSetup(m) { mode = m; $('setupTitle').textContent = m === 'quiz' ? 'Quiz setup' : 'Practice setup'; $('setupDesc').textContent = m === 'quiz' ? 'Choose a topic and customize your quiz.' : 'Choose a topic to generate a focused practice session.'; $('topicSelect').value = 'tables'; $('countSelect').value = m === 'practice' ? '10' : '20'; $('timerSelect').value = m === 'practice' ? '0' : '300'; showView('setup') }
+    function openPractice(topic) { practiceTopic = topic; mode = 'practice'; $('practiceTitle').textContent = ({ tables: 'Multiplication tables', squares: 'Square numbers', cubes: 'Cube numbers', fractions: 'Fractions & percentages' })[topic]; $('practiceDesc').textContent = 'Choose a range or value to revise. Answers are shown for learning.'; buildPracticeControls(); showView('practice') }
+    function buildPracticeControls() {
+      let html = '';
+      if (practiceTopic === 'tables') html = `<div class="formgrid"><div class="field"><label>Table number</label><input id="pNum" type="number" min="1" max="100" value="17"></div><div class="field"><label>Multiply up to</label><select id="pLimit"><option>10</option><option selected>15</option><option>20</option></select></div></div><button class="btn" onclick="generatePractice()">Show table</button>`;
+      if (practiceTopic === 'squares' || practiceTopic === 'cubes') html = `<div class="formgrid"><div class="field"><label>From</label><input id="pFrom" type="number" value="1" min="1"></div><div class="field"><label>To</label><input id="pTo" type="number" value="${practiceTopic === 'squares' ? 50 : 20}" min="1"></div></div><button class="btn" onclick="generatePractice()">Generate list</button>`;
+      if (practiceTopic === 'fractions') html = `<div class="formgrid"><div class="field"><label>Conversion direction</label><select id="pDirection"><option value="f2p">Fraction → Percentage</option><option value="p2f">Percentage → Fraction</option></select></div><div class="field"><label>Choose a fraction / percentage</label><select id="pFraction">${fractions.map(([n, d]) => `<option value="${n}/${d}">${n}/${d} (${pctText(n, d)}%)</option>`).join('')}</select></div></div><button class="btn" onclick="generatePractice()">Show conversion</button>`;
+      $('practiceControls').innerHTML = html; $('practiceOutput').innerHTML = '';
+    }
+    function generatePractice() {
+      let out = '';
+      if (practiceTopic === 'tables') { let n = + $('pNum').value, l = +$('pLimit').value; if (!n || n < 1 || n > 100) { alert('Enter a table number between 1 and 100.'); return } out = Array.from({ length: l }, (_, i) => `<div class="equation"><span>${n} × ${i + 1}</span><span>${n * (i + 1)}</span></div>`).join('') }
+      if (practiceTopic === 'squares' || practiceTopic === 'cubes') { let a = +$('pFrom').value, b = +$('pTo').value, max = practiceTopic === 'squares' ? 100 : 30; if (a < 1 || b < a || b > max) { alert(`Choose a valid range between 1 and ${max}.`); return } out = Array.from({ length: b - a + 1 }, (_, i) => { let n = a + i, v = practiceTopic === 'squares' ? n * n : n * n * n; return `<div class="equation"><span>${n}${practiceTopic === 'squares' ? '²' : '³'}</span><span>${v}</span></div>` }).join('') }
+      if (practiceTopic === 'fractions') { let [n, d] = $('pFraction').value.split('/').map(Number), dir = $('pDirection').value; if (dir === 'f2p') out = `<div class="panel" style="box-shadow:none;text-align:center"><div class="muted">Fraction to percentage</div><div class="question">${n}/${d} = ${pctText(n, d)}%</div><p class="muted">Divide ${n} by ${d}, then multiply by 100.</p></div>`; else out = `<div class="panel" style="box-shadow:none;text-align:center"><div class="muted">Percentage to fraction</div><div class="question">${pctText(n, d)}% = ${simplify(n * 100, d * 100)}</div><p class="muted">Write the percentage over 100 and simplify.</p></div>` }
+      $('practiceOutput').innerHTML = practiceTopic === 'fractions' ? out : `<div class="table-list">${out}</div>`;
+    }
+    function rand(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a }
+    function fractionHint(n, d) {
+      // Build a question-specific shortcut from a familiar unit fraction.
+      const anchors = [2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 25, 32, 40, 50, 64, 80, 100];
+      const target = pct(n, d);
+      if (n === 1) {
+        return `Remember the matching fraction: 1/${d} = ${pctText(1, d)}%. This question is asking for that exact conversion.`;
+      }
+      return `Start with 1/${d} = ${pctText(1, d)}%. Since ${n}/${d} is ${n} times 1/${d}, multiply ${pctText(1, d)}% by ${n}.`;
+    }
+    function percentageToFractionHint(n, d) {
+      const target = pct(n, d);
+      const anchors = [2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 25, 32, 40, 50, 64, 80, 100];
+      let choices = [];
+      for (const den of anchors) {
+        const base = 100 / den, multiplier = target / base;
+        if (Number.isInteger(multiplier) && multiplier >= 2 && multiplier <= 10) {
+          choices.push({ den, base, multiplier });
         }
-        function selectAnswer(choice, button) {
-            if (locked) return; locked = true;
-            const correct = choice === current.correct;
-            document.querySelectorAll(".answer").forEach(b => {
-                b.disabled = true;
-                if (b.textContent === current.correct) b.classList.add("correct");
-            });
-            if (correct) { score += 10; streak++; $("feedback").textContent = "Correct! +10 points. Keep it up!"; $("feedback").className = "feedback good"; }
-            else { streak = 0; button.classList.add("wrong"); $("feedback").textContent = `Not quite. Correct answer: ${current.correct}`; $("feedback").className = "feedback bad"; }
-            $("score").textContent = score; $("streak").textContent = streak + " 🔥"; $("next").disabled = false;
+      }
+      // Prefer a small, memorable multiplier; break ties by a familiar base.
+      choices.sort((a, b) => a.multiplier - b.multiplier || anchors.indexOf(a.den) - anchors.indexOf(b.den));
+      if (choices.length) {
+        const c = choices[0], result = simplify(c.multiplier, c.den);
+        return `Use the known conversion 1/${c.den} = ${pctText(1, c.den)}%. ${pctText(n, d)}% is ${c.multiplier} × ${pctText(1, c.den)}%, so multiply the numerator by ${c.multiplier}: ${c.multiplier}/${c.den} = ${result}.`;
+      }
+      if (Math.abs(target - Math.round(target)) < 0.000001) {
+        return `Write ${target}% as ${target}/100. Now divide the numerator and denominator by their highest common factor to get the simplest fraction.`;
+      }
+      return `Convert the percentage into a fraction by writing ${pctText(n, d)}/100, then multiply the top and bottom by 100 if there are decimals. Finally, divide both by their highest common factor.`;
+    }
+    function makeQuestion(topic, difficulty = 'moderate', direction = 'both', range = [2, 20], limit = 15) {
+      let type = topic; if (topic === 'mixed') type = ['tables', 'squares', 'cubes', 'fractions'][rand(0, 3)];
+      let q, ans, hint, display;
+      if (type === 'tables') {
+        let a = rand(range[0], range[1]), b = rand(2, limit);
+        q = `${a} × ${b} = ?`; ans = String(a * b);
+        let tens = Math.floor(b / 10) * 10, units = b - tens;
+        hint = units ? `Split ${b} into ${tens} + ${units}. Calculate (${a} × ${tens}) + (${a} × ${units}), then add the two results.` : `Use the ${a} table: ${a} multiplied by ${b} means adding ${a} a total of ${b} times.`;
+        display = ans;
+      }
+      if (type === 'squares') {
+        let a = rand(1, difficulty === 'easy' ? 30 : 100); q = `${a}² = ?`; ans = String(a * a);
+        let base = Math.round(a / 10) * 10, delta = a - base;
+        hint = Math.abs(delta) <= 5 && a >= 6 ? `Use the nearby round number ${base}. Apply ( ${base} ${delta < 0 ? '-' : '+'} ${Math.abs(delta)} )² = ${base}² ${delta < 0 ? '-' : '+'} 2 × ${base} × ${Math.abs(delta)} + ${Math.abs(delta)}².` : `A square means ${a} × ${a}. Break ${a} into tens and units, multiply, and add the partial results.`;
+        display = ans;
+      }
+      if (type === 'cubes') {
+        let a = rand(1, difficulty === 'easy' ? 15 : 30); q = `${a}³ = ?`; ans = String(a * a * a);
+        hint = `A cube means ${a} × ${a} × ${a}. First calculate ${a}² = ${a * a}; then multiply ${a * a} by ${a}.`;
+        display = ans;
+      }
+      if (type === 'fractions') {
+        let [n, d] = fractions[rand(0, fractions.length - 1)];
+        let toPct = direction === 'f2p' || (direction === 'both' && Math.random() < .5);
+        if (direction === 'p2f') toPct = false;
+        if (toPct) {
+          q = `${n}/${d} = ?%`; ans = pctText(n, d);
+          hint = fractionHint(n, d); display = ans + '%';
+        } else {
+          let p = pct(n, d); q = `${pctText(n, d)}% = ?`; ans = simplify(n, d);
+          hint = percentageToFractionHint(n, d); display = ans;
         }
-        function start() {
-            total = Number($("rounds").value); deck = shuffle(pairs).slice(0, total);
-            index = 0; score = 0; streak = 0;
-            $("score").textContent = "0"; $("streak").textContent = "0 🔥"; $("game").classList.remove("hidden"); $("result").classList.add("hidden");
-            makeQuestion();
-        }
-        function next() {
-            if (!locked) return;
-            index++;
-            if (index >= total) {
-                $("game").classList.add("hidden"); $("result").classList.remove("hidden");
-                $("progress").style.width = "100%"; $("finalScore").textContent = `${score} / ${total * 10}`;
-                const pct = score / (total * 10) * 100;
-                $("summary").textContent = pct === 100 ? "Perfect round! Excellent calculation speed." : pct >= 70 ? "Great work. Keep practising to get faster." : pct >= 50 ? "Good effort. Review the missed conversions and try again." : "Keep going. Memorise the common fractions and try another round.";
-            } else makeQuestion();
-        }
-        $("next").addEventListener("click", next);
-        $("restart").addEventListener("click", start);
-        $("playAgain").addEventListener("click", start);
-        $("mode").addEventListener("change", start);
-        $("rounds").addEventListener("change", start);
-        start();
-    </script>
+      }
+      return { topic: type, q, ans, hint, display };
+    }
+    function beginQuiz() {
+      let topic = $('topicSelect').value, method = $('methodSelect').value, count = mode === 'practice' ? +$('countSelect').value : +$('countSelect').value, diff = $('difficultySelect').value, seconds = mode === 'practice' ? 0 : +$('timerSelect').value, from = +$('tableFrom').value, to = +$('tableTo').value, limit = +$('multLimit').value, dir = $('fractionDirection').value;
+      if (from < 1 || to < from || to > 100) { alert('Please enter a valid table range.'); return }
+      lastConfig = { topic, method, count, diff, seconds, from, to, limit, dir };
+      questions = Array.from({ length: count }, () => makeQuestion(topic, diff, dir, [from, to], limit)); index = 0; answers = []; currentWrong = []; startedAt = Date.now(); remaining = seconds; locked = false;
+      $('quizTopic').textContent = topic === 'mixed' ? 'Mixed topics' : topic[0].toUpperCase() + topic.slice(1); $('timerText').textContent = seconds ? formatTime(seconds) : 'Untimed'; $('feedbackArea').innerHTML = ''; showView('quiz'); renderQuestion();
+      clearInterval(timer); if (seconds) { timer = setInterval(() => { remaining--; $('timerText').textContent = formatTime(remaining); if (remaining <= 0) { clearInterval(timer); finishQuiz() } }, 1000) }
+    }
+    function formatTime(s) { return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` }
+    function renderQuestion() {
+      let q = questions[index]; locked = false; $('questionCount').textContent = `${index + 1} / ${questions.length}`; $('progressBar').style.width = (index / questions.length * 100) + '%'; $('questionText').textContent = q.q; $('hintArea').innerHTML = ''; $('feedbackArea').innerHTML = ''; $('nextBtn').style.display = 'none';
+      if (lastConfig.method === 'mcq') { let opts = new Set([q.ans]); let numeric = Number(q.ans); let attempts = 0; while (opts.size < 4 && attempts++ < 100) { let candidate; if (q.topic === 'fractions') { let f = fractions[rand(0, fractions.length - 1)]; candidate = q.q.includes('% =') ? simplify(f[0], f[1]) : pctText(f[0], f[1]); } else candidate = String(Math.max(0, numeric + rand(-Math.max(5, Math.round(numeric * .3)), Math.max(5, Math.round(numeric * .3))))); if (candidate !== q.ans) opts.add(candidate) } let arr = [...opts].sort(() => Math.random() - .5); $('answerArea').innerHTML = `<div class="options">${arr.map(o => `<button class="option" onclick="submitAnswer(${JSON.stringify(o).replace(/"/g, '&quot;')},this)">${o}</button>`).join('')}</div>` }
+      else $('answerArea').innerHTML = `<div class="answer-row"><input class="answer-input" id="answerInput" type="text" inputmode="decimal" autocomplete="off" placeholder="Type your answer"><button class="btn" onclick="submitManual()">Submit</button></div>`;
+      if ($('answerInput')) $('answerInput').addEventListener('keydown', e => { if (e.key === 'Enter') submitManual() });
+    }
+    function toggleHint() { let el = $('hintArea'); el.innerHTML = el.innerHTML ? '' : `<div class="hintbox">💡 ${questions[index].hint}</div>` }
+    function normalize(s) { return String(s).trim().replace(/\s/g, '').replace(/%$/, '').replace(/,/g, '') }
+    function submitManual() { let v = $('answerInput').value.trim(); if (!v) return; submitAnswer(v) }
+    function submitAnswer(value, button) {
+      if (locked) return; let q = questions[index], correct = normalize(value) === normalize(q.ans); locked = true;
+      answers[index] = { question: q.q, user: String(value), correct, answer: q.ans, topic: q.topic };
+      if (!correct) { currentWrong.push(q); stats.mistakes.unshift({ q: q.q, ans: q.ans, hint: q.hint, topic: q.topic }); stats.mistakes = stats.mistakes.slice(0, 100) }
+      stats.attempted++; if (correct) stats.correct++; save();
+      if (button) { document.querySelectorAll('.option').forEach(b => { b.disabled = true; if (normalize(b.textContent) === normalize(q.ans)) b.classList.add('correct') }); if (!correct) button.classList.add('wrong') }
+      $('feedbackArea').innerHTML = `<div class="feedback ${correct ? 'good' : 'bad'}">${correct ? '✓ Correct!' : '✗ Not quite.'} ${correct ? 'Great work.' : `Correct answer: ${q.ans}`}</div>`;
+      $('nextBtn').style.display = 'inline-block'; $('nextBtn').textContent = index === questions.length - 1 ? 'See results →' : 'Next question →';
+    }
+    function nextQuestion() { if (!locked) return; if (index < questions.length - 1) { index++; renderQuestion() } else finishQuiz() }
+    function finishQuiz() {
+      clearInterval(timer); let elapsed = Math.round((Date.now() - startedAt) / 1000), done = answers.filter(Boolean), correct = done.filter(a => a.correct).length, wrong = done.length - correct, accuracy = done.length ? Math.round(correct / done.length * 100) : 0;
+      $('resultAccuracy').textContent = accuracy + '%'; $('resultCorrect').textContent = correct; $('resultWrong').textContent = wrong; $('resultTime').textContent = formatTime(elapsed); $('resultMessage').textContent = accuracy >= 85 ? 'Excellent work — keep this consistency!' : accuracy >= 60 ? 'Good effort. Review your mistakes and try again.' : 'Keep practising. Focus on understanding the patterns, not just speed.';
+      $('reviewList').innerHTML = `<h3>Question review</h3>` + questions.map((q, i) => { let a = answers[i]; return `<div class="review-item"><strong>${i + 1}. ${q.q}</strong><small>${a ? `Your answer: ${a.user} · ${a.correct ? 'Correct' : 'Incorrect'}` : 'Not attempted'} · Correct answer: ${q.ans}</small></div>` }).join('');
+      let today = new Date().toDateString(), last = localStorage.getItem('ms_lastday'), streak = +(localStorage.getItem('ms_streak') || 0); if (last !== today) { let yesterday = new Date(Date.now() - 86400000).toDateString(); streak = last === yesterday ? streak + 1 : 1; localStorage.setItem('ms_streak', streak); localStorage.setItem('ms_lastday', today) }
+      stats.history.unshift({ date: today, accuracy, correct, total: questions.length }); stats.history = stats.history.slice(0, 30); save(); showView('results');
+    }
+    function endQuizEarly() { if (confirm('Finish this session now?')) finishQuiz() }
+    function startMistakes() { if (!stats.mistakes.length) { alert('Your mistake notebook is empty. Complete a quiz and incorrect answers will appear here.'); return } questions = stats.mistakes.slice(0, 20).map(m => ({ topic: m.topic, q: m.q, ans: m.ans, hint: m.hint })); index = 0; answers = []; currentWrong = []; lastConfig = { method: 'manual' }; startedAt = Date.now(); remaining = 0; clearInterval(timer); $('quizTopic').textContent = 'Mistake revision'; $('timerText').textContent = 'Untimed'; showView('quiz'); renderQuestion() }
+    function retryWrong() { if (!currentWrong.length) { showView('home'); return } questions = currentWrong; index = 0; answers = []; currentWrong = []; lastConfig = { method: 'manual' }; startedAt = Date.now(); $('quizTopic').textContent = 'Mistake revision'; $('timerText').textContent = 'Untimed'; showView('quiz'); renderQuestion() }
+    function dailyChallenge() { mode = 'quiz'; $('topicSelect').value = 'mixed'; $('countSelect').value = '20'; $('methodSelect').value = 'mcq'; $('timerSelect').value = '300'; $('difficultySelect').value = 'mixed'; $('fractionDirection').value = 'both'; $('tableFrom').value = '2'; $('tableTo').value = '20'; $('multLimit').value = '15'; beginQuiz() }
+    $('themeBtn').addEventListener('click', () => { document.body.classList.toggle('dark'); localStorage.setItem('ms_dark', document.body.classList.contains('dark') ? '1' : '0'); $('themeBtn').textContent = document.body.classList.contains('dark') ? '☀' : '☾' });
+    if (localStorage.getItem('ms_dark') === '1') { document.body.classList.add('dark'); $('themeBtn').textContent = '☀' }
+    renderStats();
+  </script>
 </body>
 
 </html>
